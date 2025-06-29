@@ -75,7 +75,7 @@ final class DetailViewController: UIViewController, DetailViewProtocol {
     /// Обращается к Presenter'у за текущей монетой и передает ее в `FavoritesManager`.
     @objc private func buttonTapped() {
         print("Кнопка нажата. Добавляем монету в избранное.")
-        FavoritesManager.shared.addFavorite(presenter.coin)
+        NotificationManager.shared.addFavorite(presenter.coin)
     }
     
     // MARK: - UI Setup
@@ -119,8 +119,10 @@ final class DetailViewController: UIViewController, DetailViewProtocol {
             addFavoriteCoin.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
-    
-    // MARK: - DetailViewProtocol
+}
+
+//MARK: -Confirm protocol
+extension DetailViewController {
     func displayCoinDetails(coin: Coin) {
         title = coin.name
         

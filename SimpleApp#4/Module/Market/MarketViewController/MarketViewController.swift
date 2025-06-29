@@ -8,11 +8,10 @@
 import UIKit
 
 protocol MarketViewProtocol: AnyObject {
-    var collectionView: UICollectionView { get }
-    
     /// Показывает пользователю алерт с сообщением об ошибке.
     /// - Parameter message: Текст ошибки для отображения.
     func showError(_ message: String)
+    var collectionView: UICollectionView { get }
 }
 
 final class MarketViewController: UIViewController, MarketViewProtocol {
@@ -65,29 +64,6 @@ final class MarketViewController: UIViewController, MarketViewProtocol {
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
-    
-    func showError(_ message: String) {
-        let alert = UIAlertController(
-            title: "Ошибка",
-            message: message,
-            preferredStyle: .alert
-        )
-        
-        alert.addAction(UIAlertAction(
-            title: "Повторить",
-            style: .default,
-            handler: { [weak self] _ in
-                self?.presenter.retryFetch()
-            }
-        ))
-        
-        alert.addAction(UIAlertAction(
-            title: "OK",
-            style: .cancel
-        ))
-        
-        present(alert, animated: true)
-    }
 }
 
 extension MarketViewController: UICollectionViewDataSource {
@@ -116,5 +92,31 @@ extension MarketViewController: UICollectionViewDelegate {
         let item = presenter.coins[indexPath.item]
         let vc = Builder.createDetailViewController(with: item)
         navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+//MARK: -Confirm protocol
+extension MarketViewController {
+    func showError(_ message: String) {
+        let alert = UIAlertController(
+            title: "Ошибка",
+            message: message,
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(
+            title: "Повторить",
+            style: .default,
+            handler: { [weak self] _ in
+                self?.presenter.retryFetch()
+            }
+        ))
+        
+        alert.addAction(UIAlertAction(
+            title: "OK",
+            style: .cancel
+        ))
+        
+        present(alert, animated: true)
     }
 }

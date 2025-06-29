@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol TracingViewPresenterProtocol {
+protocol TracingViewPresenterProtocol: AnyObject {
     /// Предоставляет доступ к текущему списку избранных монет.
     var favoriteCoins: [Coin] { get }
     
@@ -19,13 +19,13 @@ protocol TracingViewPresenterProtocol {
 final class TracingPresenter: TracingViewPresenterProtocol {
     
     weak var view: TracingViewProtocol?
-    private let favoritesManager = FavoritesManager.shared
+    private let favoritesManager = NotificationManager.shared
     
     var favoriteCoins: [Coin] {
         return favoritesManager.favorites
     }
     
-    init(view: TracingViewProtocol) {
+    init(view: TracingViewProtocol?) {
         self.view = view
     }
     
@@ -49,7 +49,6 @@ final class TracingPresenter: TracingViewPresenterProtocol {
     }
 
     deinit {
-        // Отписка от уведомлений для предотвращения утечек памяти.
         NotificationCenter.default.removeObserver(self)
     }
 }

@@ -8,8 +8,8 @@
 import UIKit
 
 protocol SettingsViewProtocol: AnyObject {
-    func reloadData()
     var tableView: UITableView { get }
+    func reloadData()
 }
 
 /// Контроллер, отображающий экран настроек приложения.
@@ -58,10 +58,6 @@ final class SettingsViewController: UIViewController, SettingsViewProtocol {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
-    
-    func reloadData() {
-        tableView.reloadData()
-    }
 }
 
 extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -88,4 +84,11 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         presenter.didSelectRow(at: indexPath)
     }
-} 
+}
+
+//-MARK: Confirm Protocol
+extension SettingsViewController {
+    func reloadData() {
+        tableView.reloadData()
+    }
+}

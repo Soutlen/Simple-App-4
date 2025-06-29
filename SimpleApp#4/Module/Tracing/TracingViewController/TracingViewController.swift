@@ -13,7 +13,7 @@ protocol TracingViewProtocol: AnyObject {
 }
 
 /// Контроллер, отображающий список избранных криптовалют.
-final class TracingViewController: UIViewController, TracingViewProtocol {
+final class TracingViewController: UIViewController {
     
     var presenter: TracingViewPresenterProtocol!
     private var collectionView: UICollectionView!
@@ -24,8 +24,6 @@ final class TracingViewController: UIViewController, TracingViewProtocol {
         title = "Отслеживание"
         setupUI()
         setupCollectionView()
-
-        presenter = TracingPresenter(view: self)
         presenter.viewDidLoad()
     }
     
@@ -63,10 +61,6 @@ final class TracingViewController: UIViewController, TracingViewProtocol {
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
-    
-    func reloadData() {
-        collectionView.reloadData()
-    }
 }
 
 extension TracingViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -83,3 +77,11 @@ extension TracingViewController: UICollectionViewDataSource, UICollectionViewDel
         return cell
     }
 }
+
+// -MARK: - ConfirmProtocol
+extension TracingViewController: TracingViewProtocol {
+    func reloadData() {
+        collectionView.reloadData()
+    }
+}
+

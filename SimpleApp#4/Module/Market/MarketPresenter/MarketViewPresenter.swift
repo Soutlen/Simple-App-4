@@ -31,7 +31,10 @@ final class MarketViewPresenter: MarketViewPresenterProtocol {
         self.view = view
         self.network = network
     }
-    
+}
+
+//MARK: - Confirm protocol
+extension MarketViewPresenter {
     /// Основная логика пагинации.
     ///
     /// Проверяет, не идет ли уже загрузка и есть ли еще данные для загрузки.

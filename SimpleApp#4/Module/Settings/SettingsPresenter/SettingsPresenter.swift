@@ -23,15 +23,6 @@ final class SettingsPresenter: SettingsPresenterProtocol {
         self.view = view
     }
     
-    func viewDidLoad() {
-        configureModels()
-    }
-    
-    func didSelectRow(at indexPath: IndexPath) {
-        let model = sections[indexPath.section][indexPath.row]
-        model.handler()
-    }
-    
     private func configureModels() {
         let section1 = [
             SettingsOption(
@@ -102,3 +93,15 @@ final class SettingsPresenter: SettingsPresenterProtocol {
         view?.reloadData()
     }
 } 
+
+//MARK: -Confirm protocol
+extension SettingsPresenter {
+    func viewDidLoad() {
+        configureModels()
+    }
+    
+    func didSelectRow(at indexPath: IndexPath) {
+        let model = sections[indexPath.section][indexPath.row]
+        model.handler()
+    }
+}

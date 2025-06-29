@@ -10,7 +10,6 @@ import UIKit
 /// Статический класс-сборщик, отвечающий за создание и конфигурацию MVP модулей.
 final class Builder {
     private init() {}
-
     
     /// Создает и конфигурирует главный TabBarController приложения.
     /// - Returns: Готовый к отображению `UITabBarController`.
@@ -63,9 +62,27 @@ final class Builder {
     /// - Returns: Готовый `DetailViewController`.
     static func createTracingViewController() -> UIViewController {
         let viewController = TracingViewController()
+        let presenter = TracingPresenter(view: viewController)
+        viewController.presenter = presenter
         
         let navController = UINavigationController(rootViewController: viewController)
         navController.navigationBar.prefersLargeTitles = true
         return navController
+    }
+    
+    static func createAuthViewController() -> UIViewController {
+        let viewController = AuthViewController()
+        let presenter = AuthPresenter(view: viewController)
+        viewController.presenter = presenter
+
+        return viewController
+    }
+    
+    static func createRegViewController() -> UIViewController {
+        let viewController = RegViewController()
+        let presenter = RegPresenter(view: viewController)
+        viewController.presenter = presenter
+        
+        return viewController
     }
 }

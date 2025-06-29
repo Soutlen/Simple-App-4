@@ -23,8 +23,11 @@ final class DetailPresenter: DetailPresenterProtocol {
         self.view = view
         self.coin = coin
     }
-    
+} 
+
+//MARK: -Confirm protocol
+extension DetailPresenter {
     func viewDidLoad() {
         view?.displayCoinDetails(coin: coin)
     }
-} 
+}
