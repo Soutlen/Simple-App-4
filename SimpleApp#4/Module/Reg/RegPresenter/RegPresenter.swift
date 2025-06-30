@@ -8,7 +8,7 @@
 import UIKit
 
 protocol RegPresenterProtocol: AnyObject {
-    func registrationButtonTapped()
+
 }
 
 class RegPresenter: RegPresenterProtocol {
@@ -20,8 +20,3 @@ class RegPresenter: RegPresenterProtocol {
    
 }
 
-extension RegPresenter {
-    func registrationButtonTapped() {
-        NotificationCenter.default.post(name: .goToAuth, object: nil)
-    }
-}

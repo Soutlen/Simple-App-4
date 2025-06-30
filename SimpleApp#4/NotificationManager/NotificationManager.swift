@@ -10,10 +10,6 @@ import Foundation
 extension Notification.Name {
     static let favoritesDidUpdate = Notification.Name("favoritesDidUpdate")
     
-    static let goToReg = Notification.Name("goToReg")
-    
-    static let goToAuth = Notification.Name("goToAuth")
-    
     static let setRoot = Notification.Name("setRoot")
 }
 

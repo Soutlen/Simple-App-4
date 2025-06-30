@@ -14,7 +14,13 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
         self.window = UIWindow(windowScene: scene)
-        self.window?.rootViewController = Builder.createAuthViewController()
+        
+        let isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
+        if isLoggedIn {
+            self.window?.rootViewController = Builder.createTabBarController()
+        } else {
+            self.window?.rootViewController = Builder.createAuthViewController()
+        }
         self.window?.makeKeyAndVisible()
         
         NotificationCenter.default.addObserver(self, selector: #selector(setRoot), name: .setRoot, object: nil)
@@ -31,6 +37,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             self.window?.rootViewController = Builder.createRegViewController()
         case "auth":
             self.window?.rootViewController = Builder.createAuthViewController()
+        case "tabBar":
+            self.window?.rootViewController = Builder.createTabBarController()
         default:
             print("Ошибка: неизвестный экран")
         }

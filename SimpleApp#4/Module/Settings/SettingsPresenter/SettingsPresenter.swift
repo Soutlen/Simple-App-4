@@ -89,7 +89,21 @@ final class SettingsPresenter: SettingsPresenterProtocol {
                 iconBackgroundColor: .systemBlue) { print("Tapped: Поделиться приложением") }
         ]
         
-        sections = [section1, section2, section3, section4, section5]
+        let section6 = [
+            SettingsOption(
+                title: "Выйти",
+                icon: UIImage(systemName:  "rectangle.portrait.and.arrow.right"),
+                iconBackgroundColor: .systemRed,
+                handler: {
+                    UserDefaults.standard.set(false, forKey: "isLoggedIn")
+                    NotificationCenter.default.post(
+                        name: .setRoot,
+                        object: nil,
+                        userInfo: ["screen" : "auth"])
+                })
+        ]
+        
+        sections = [section1, section2, section3, section4, section5, section6]
         view?.reloadData()
     }
 } 

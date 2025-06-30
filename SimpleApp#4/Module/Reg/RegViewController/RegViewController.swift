@@ -42,6 +42,7 @@ class RegViewController: UIViewController, RegViewProtocol {
         $0.returnKeyType = .done
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 15
+        $0.addTarget(self, action: #selector(textFieldsChanged), for: .editingChanged)
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UITextField())
@@ -58,6 +59,7 @@ class RegViewController: UIViewController, RegViewProtocol {
         $0.isSecureTextEntry = true
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 15
+        $0.addTarget(self, action: #selector(textFieldsChanged), for: .editingChanged)
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UITextField())
@@ -67,9 +69,10 @@ class RegViewController: UIViewController, RegViewProtocol {
         $0.setTitleColor(.blue, for: .normal)
         $0.backgroundColor = .systemPurple
         $0.layer.cornerRadius = 20
+        $0.isEnabled = false
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
-    }(UIButton())
+    }(UIButton(primaryAction: actionRegButton))
     
     lazy var authButton: UIButton = {
         $0.setTitle("Авторизация", for: .normal)
@@ -77,14 +80,23 @@ class RegViewController: UIViewController, RegViewProtocol {
         $0.backgroundColor = .clear
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
-    }(UIButton(primaryAction: action))
+    }(UIButton(primaryAction: actionAuthButton))
     
-    lazy var action = UIAction { [weak self] _ in
+    lazy var actionAuthButton = UIAction { [weak self] _ in
         
         NotificationCenter.default.post(
             name: .setRoot,
             object: nil,
             userInfo: ["screen" : "auth"])
+    }
+    
+    lazy var actionRegButton = UIAction { [weak self] _ in
+        UserDefaults.standard.set(true, forKey: "isLoggedIn")
+        
+        NotificationCenter.default.post(
+            name: .setRoot,
+            object: nil,
+            userInfo: ["screen" : "tabBar"])
     }
     
     override func viewDidLoad() {
@@ -137,5 +149,10 @@ class RegViewController: UIViewController, RegViewProtocol {
             authButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
             authButton.heightAnchor.constraint(equalToConstant: 40)
         ])
+    }
+    
+    @objc func textFieldsChanged() {
+        let isFilled = !(userEmail.text?.isEmpty ?? true) && !(userPassword.text?.isEmpty ?? true)
+        regButton.isEnabled = isFilled
     }
 }
