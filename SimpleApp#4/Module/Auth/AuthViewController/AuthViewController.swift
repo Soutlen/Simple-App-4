@@ -16,71 +16,43 @@ final class AuthViewController: UIViewController, AuthViewProtocol {
     var presenter: AuthPresenterProtocol!
     
     //MARK: -UI Components
-    private lazy var userEmail: UITextField = {
-        $0.text = ""
-        $0.placeholder = "Введите email"
-        $0.textColor = .red
-        $0.font = .systemFont(ofSize: 12, weight: .regular)
-        $0.textAlignment = .left
-        $0.borderStyle = .roundedRect
-        $0.keyboardType = .default
-        $0.returnKeyType = .done
-        $0.clipsToBounds = true
-        $0.layer.cornerRadius = 15
-        $0.addTarget(self, action: #selector(textFieldsChanged), for: .editingChanged)
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(UITextField())
     
-    private lazy var userPassword: UITextField = {
-        $0.text = ""
-        $0.placeholder = "Введите password"
-        $0.textColor = .red
-        $0.font = .systemFont(ofSize: 12, weight: .regular)
-        $0.textAlignment = .left
-        $0.borderStyle = .roundedRect
-        $0.keyboardType = .default
-        $0.returnKeyType = .done
-        $0.isSecureTextEntry = true
-        $0.clipsToBounds = true
-        $0.layer.cornerRadius = 15
-        $0.addTarget(self, action: #selector(textFieldsChanged), for: .editingChanged)
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(UITextField())
+    private lazy var userEmail = makeTextField(
+        placeholder: "Введите email",
+        textColor: .red,
+        isSecureTextEntry: false,
+        target: self,
+        action: #selector(textFieldsChanged),
+        for: .editingChanged)
     
-    private lazy var authButton: UIButton = {
-        $0.setTitle("Войти", for: .normal)
-        $0.setTitleColor(.blue, for: .normal)
-        $0.backgroundColor = .systemPurple
-        $0.layer.cornerRadius = 20
-        $0.isEnabled = false
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(UIButton(primaryAction: actionAuthButton))
+    private lazy var userPassword = makeTextField(
+        placeholder: "Введите password",
+        textColor: .red,
+        isSecureTextEntry: true,
+        target: self,
+        action: #selector(textFieldsChanged),
+        for: .editingChanged)
     
-    private lazy var regButton: UIButton = {
-        $0.setTitle("Регистрация", for: .normal)
-        $0.setTitleColor(.blue, for: .normal)
-        $0.backgroundColor = .clear
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(UIButton(primaryAction: actionRegButton))
+    private lazy var authButton = makeButton(
+        title: "Войти",
+        backColor: .systemPurple,
+        isEnabled: false) { _ in
+        NotificationCenter.default.post(
+            name: .setRoot,
+            object: nil,
+            userInfo: ["screen" : "tabBar"]
+        )
+    }
     
-    lazy var actionRegButton = UIAction { [weak self] _ in
+    private let regButton = makeButton(
+        title: "Регистрация",
+        backColor: .clear,
+        isEnabled: true) { _ in
         UserDefaults.standard.set(true, forKey: "isLoggedIn")
         NotificationCenter.default.post(
             name: .setRoot,
             object: nil,
             userInfo: ["screen" : "reg"]
-        )
-    }
-    
-    lazy var actionAuthButton = UIAction { [weak self] _ in
-        NotificationCenter.default.post(
-            name: .setRoot,
-            object: nil,
-            userInfo: ["screen" : "tabBar"]
         )
     }
     

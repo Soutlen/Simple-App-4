@@ -11,94 +11,56 @@ protocol RegViewProtocol: AnyObject {
     
 }
 
-class RegViewController: UIViewController, RegViewProtocol {
+final class RegViewController: UIViewController, RegViewProtocol {
     
     var presenter: RegPresenterProtocol!
     
     //MARK: -UI Components
-    private lazy var userName: UITextField = {
-        $0.text = ""
-        $0.placeholder = "Введите user name"
-        $0.textColor = .red
-        $0.font = .systemFont(ofSize: 12, weight: .regular)
-        $0.textAlignment = .left
-        $0.borderStyle = .roundedRect
-        $0.keyboardType = .default
-        $0.returnKeyType = .done
-        $0.clipsToBounds = true
-        $0.layer.cornerRadius = 15
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(UITextField())
     
-    private lazy var userEmail: UITextField = {
-        $0.text = ""
-        $0.placeholder = "Введите email"
-        $0.textColor = .red
-        $0.font = .systemFont(ofSize: 12, weight: .regular)
-        $0.textAlignment = .left
-        $0.borderStyle = .roundedRect
-        $0.keyboardType = .default
-        $0.returnKeyType = .done
-        $0.clipsToBounds = true
-        $0.layer.cornerRadius = 15
-        $0.addTarget(self, action: #selector(textFieldsChanged), for: .editingChanged)
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(UITextField())
+    private lazy var userName = makeTextField(
+        placeholder: "Введите user name",
+        target: self,
+        action: #selector(textFieldsChanged),
+        for: .editingChanged)
     
-    private lazy var userPassword: UITextField = {
-        $0.text = ""
-        $0.placeholder = "Введите password"
-        $0.textColor = .red
-        $0.font = .systemFont(ofSize: 12, weight: .regular)
-        $0.textAlignment = .left
-        $0.borderStyle = .roundedRect
-        $0.keyboardType = .default
-        $0.returnKeyType = .done
-        $0.isSecureTextEntry = true
-        $0.clipsToBounds = true
-        $0.layer.cornerRadius = 15
-        $0.addTarget(self, action: #selector(textFieldsChanged), for: .editingChanged)
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(UITextField())
     
-    private lazy var regButton: UIButton = {
-        $0.setTitle("Регистрация", for: .normal)
-        $0.setTitleColor(.blue, for: .normal)
-        $0.backgroundColor = .systemPurple
-        $0.layer.cornerRadius = 20
-        $0.isEnabled = false
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(UIButton(primaryAction: actionRegButton))
+    private lazy var userEmail = makeTextField(
+        placeholder: "Введите email",
+        target: self,
+        action: #selector(textFieldsChanged),
+        for: .editingChanged)
     
-    lazy var authButton: UIButton = {
-        $0.setTitle("Авторизация", for: .normal)
-        $0.setTitleColor(.blue, for: .normal)
-        $0.backgroundColor = .clear
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(UIButton(primaryAction: actionAuthButton))
+    private lazy var userPassword = makeTextField(
+        placeholder: "Введите password",
+        isSecureTextEntry: true,
+        target: self,
+        action: #selector(textFieldsChanged),
+        for: .editingChanged)
     
-    lazy var actionAuthButton = UIAction { [weak self] _ in
-        
-        NotificationCenter.default.post(
-            name: .setRoot,
-            object: nil,
-            userInfo: ["screen" : "auth"])
-    }
-    
-    lazy var actionRegButton = UIAction { [weak self] _ in
+    private lazy var regButton = makeButton(
+        title: "Регистрация",
+        backColor: .systemPurple,
+        isEnabled: false
+    ) { _ in
         UserDefaults.standard.set(true, forKey: "isLoggedIn")
         
         NotificationCenter.default.post(
             name: .setRoot,
             object: nil,
             userInfo: ["screen" : "tabBar"])
-    }
+        }
     
+    lazy var authButton = makeButton(
+        title: "Авторизация",
+        backColor: .clear,
+        isEnabled: false
+    ) { _ in
+        NotificationCenter.default.post(
+            name: .setRoot,
+            object: nil,
+            userInfo: ["screen" : "auth"])
+        }
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .red
@@ -152,7 +114,7 @@ class RegViewController: UIViewController, RegViewProtocol {
     }
     
     @objc func textFieldsChanged() {
-        let isFilled = !(userEmail.text?.isEmpty ?? true) && !(userPassword.text?.isEmpty ?? true)
+        let isFilled = !(userName.text?.isEmpty ?? true) && !(userEmail.text?.isEmpty ?? true) && !(userPassword.text?.isEmpty ?? true)
         regButton.isEnabled = isFilled
     }
 }

@@ -28,7 +28,7 @@ final class SettingsCell: UITableViewCell {
     
     private let label: UILabel = {
         $0.numberOfLines = 1
-        $0.textColor = .white
+        $0.textColor = .black
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UILabel())

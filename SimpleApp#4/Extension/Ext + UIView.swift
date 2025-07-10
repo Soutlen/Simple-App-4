@@ -14,7 +14,11 @@ extension UIView {
     ///   - colors: Массив цветов (UIColor) для градиента.
     ///   - startPoint: Начальная точка градиента (например, верхний центр - CGPoint(x: 0.5, y: 0)).
     ///   - endPoint: Конечная точка градиента (например, нижний центр - CGPoint(x: 0.5, y: 1)).
-    func applyGradient(colors: [UIColor], startPoint: CGPoint, endPoint: CGPoint) {
+    func applyGradient(
+        colors: [UIColor],
+        startPoint: CGPoint,
+        endPoint: CGPoint
+    ) {
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = colors.map { $0.cgColor } // Преобразуем UIColor в CGColor
         gradientLayer.startPoint = startPoint

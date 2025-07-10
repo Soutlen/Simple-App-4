@@ -11,7 +11,7 @@ protocol RegPresenterProtocol: AnyObject {
 
 }
 
-class RegPresenter: RegPresenterProtocol {
+final class RegPresenter: RegPresenterProtocol {
     weak var view: RegViewProtocol!
     
     init(view: RegViewProtocol!) {

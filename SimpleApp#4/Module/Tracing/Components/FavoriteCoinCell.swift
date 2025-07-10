@@ -39,7 +39,6 @@ final class FavoriteCoinCell: UICollectionViewCell {
         contentView.addSubview(iconImageView)
         contentView.addSubview(nameLabel)
         
-        // Констрейнты
         NSLayoutConstraint.activate([
             iconImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             iconImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
